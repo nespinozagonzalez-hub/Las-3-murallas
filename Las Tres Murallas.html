@@ -1,0 +1,721 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Las Tres Murallas</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+/* Layout: recorrido de tres murallas defensivas; tarjetas anchas en una columna central,
+   navegación por pestañas pegada arriba. Acentos tomados de cada línea de defensa del cuerpo. */
+:root{
+  --bg:#F6F8F7; --surface:#FFFFFF; --surface-2:#E9EFEE;
+  --fg:#15211F; --fg-soft:#53655F; --line:#D3DEDA;
+  --deep:#14302C; --on-deep:#FFFFFF;
+  --piel:#C2612C; --fuego:#BE3A34; --celula:#17857A; --linfa:#6B4EA8;
+  --ok:#1C7A52; --no:#B5322D;
+  --shadow:0 1px 2px rgba(20,48,44,.06),0 6px 18px rgba(20,48,44,.08);
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --body:"Source Sans 3",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E1716; --surface:#16211F; --surface-2:#1E2C29;
+  --fg:#E7EFEC; --fg-soft:#9BAFA9; --line:#2A3A37;
+  --deep:#0B1F1C; --on-deep:#FFFFFF;
+  --piel:#E89155; --fuego:#F07B74; --celula:#45B6A9; --linfa:#A289DD;
+  --ok:#5FC79A; --no:#F08C86;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0E1716; --surface:#16211F; --surface-2:#1E2C29;
+  --fg:#E7EFEC; --fg-soft:#9BAFA9; --line:#2A3A37;
+  --deep:#0B1F1C; --on-deep:#FFFFFF;
+  --piel:#E89155; --fuego:#F07B74; --celula:#45B6A9; --linfa:#A289DD;
+  --ok:#5FC79A; --no:#F08C86;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);margin:0;line-height:1.6;font-size:16.5px}
+.wrap{max-width:860px;margin:0 auto;padding-inline:18px;padding-block:0}
+
+header.top{background:var(--deep);color:var(--on-deep);padding-block:30px 26px}
+header.top .wrap{display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:#8FC7BC;margin:0}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(30px,6.5vw,46px);line-height:1.04;margin:0;color:#fff;text-wrap:balance}
+.sub{margin:0;color:#BBD4CE;font-size:15.5px;max-width:58ch}
+.muros{display:flex;gap:6px;margin-top:4px}
+.muros span{height:6px;flex:1;border-radius:3px}
+.prog{display:flex;align-items:center;gap:12px;margin-top:14px;flex-wrap:wrap}
+.bar{flex:1;min-width:140px;height:9px;background:rgba(255,255,255,.18);border-radius:6px;overflow:hidden}
+.bar i{display:block;height:100%;width:0%;background:linear-gradient(90deg,#45B6A9,#E89155);transition:width .4s ease}
+.prog b{font-size:13px;color:#BBD4CE;font-weight:700;font-variant-numeric:tabular-nums}
+
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+nav.tabs .wrap{display:flex;gap:2px;overflow-x:auto;padding-block:0}
+nav.tabs button{flex:0 0 auto;background:none;border:0;border-bottom:3px solid transparent;color:var(--fg-soft);
+  font-family:var(--body);font-size:14px;font-weight:700;padding:13px 11px;cursor:pointer;white-space:nowrap}
+nav.tabs button:hover{color:var(--fg)}
+nav.tabs button[aria-selected="true"]{color:var(--celula);border-bottom-color:var(--celula)}
+nav.tabs button:focus-visible{outline:2px solid var(--celula);outline-offset:-3px}
+
+main{padding-block:28px 60px}
+section[hidden]{display:none!important}
+h2{font-family:var(--display);font-weight:700;font-size:clamp(23px,5vw,32px);line-height:1.12;margin:0 0 6px;text-wrap:balance}
+h3{font-family:var(--display);font-weight:700;font-size:20px;margin:0 0 8px}
+.lead{color:var(--fg-soft);margin:0 0 22px;font-size:16px;max-width:60ch}
+p{margin:0 0 12px;max-width:64ch}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:var(--shadow);margin-bottom:18px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:14px;margin-bottom:18px}
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  padding:3px 10px;border-radius:20px;background:var(--surface-2);color:var(--fg-soft);margin-bottom:9px}
+ul.clean{margin:0;padding-left:20px}ul.clean li{margin-bottom:7px}
+.dato{border-left:4px solid var(--piel);background:var(--surface-2);padding:13px 16px;border-radius:0 10px 10px 0;margin:16px 0}
+.ojo{border-left-color:var(--fuego)}
+.tablebox{overflow-x:auto;margin-bottom:18px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th{background:var(--deep);color:var(--on-deep);text-align:left;padding:10px 12px;font-size:13.5px;font-weight:700}
+td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:top}
+
+/* murallas */
+.muro{border:1px solid var(--line);border-radius:14px;padding:20px;background:var(--surface);box-shadow:var(--shadow);margin-bottom:14px}
+.mnum{display:inline-grid;place-items:center;width:38px;height:38px;border-radius:11px;color:#fff;
+  font-family:var(--display);font-weight:800;font-size:19px;margin-bottom:10px}
+.m1 .mnum{background:var(--piel)}.m2 .mnum{background:var(--fuego)}.m3 .mnum{background:var(--linfa)}
+
+.btn{font-family:var(--body);font-size:14.5px;font-weight:700;padding:9px 16px;border-radius:10px;
+  border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.btn:hover{border-color:var(--celula);color:var(--celula)}
+.btn.pri{background:var(--celula);border-color:var(--celula);color:#fff}
+.btn.pri:hover{filter:brightness(1.1);color:#fff}
+.btn:focus-visible{outline:2px solid var(--celula);outline-offset:2px}
+.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+
+/* clasificador */
+.clz{text-align:center;padding:26px 18px;border-radius:12px;background:var(--surface-2);margin-bottom:14px}
+.clz .item{font-family:var(--display);font-weight:800;font-size:clamp(22px,5vw,30px);margin:6px 0 4px}
+.clz small{color:var(--fg-soft);font-size:14px}
+.clzbtns{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:9px}
+.clzbtns button{padding:13px 10px;font-size:14px}
+.marcador{font-size:14px;font-weight:700;color:var(--fg-soft);font-variant-numeric:tabular-nums}
+
+/* emparejar */
+.mt{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:520px){.mt{grid-template-columns:1fr}}
+.mt button{text-align:left;padding:11px 13px;font-size:14px;font-weight:600;border-radius:10px;
+  border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer;font-family:var(--body)}
+.mt button:hover:not(:disabled){border-color:var(--celula)}
+.mt button.sel{border-color:var(--celula);background:var(--surface-2)}
+.mt button.hecho{border-color:var(--ok);background:rgba(28,122,82,.13);cursor:default;opacity:.75}
+.mt button:disabled{cursor:default}
+
+/* linea de tiempo */
+.paso{display:flex;gap:14px;align-items:flex-start;padding:14px;border:1px solid var(--line);
+  border-radius:12px;background:var(--surface);margin-bottom:9px;cursor:pointer;text-align:left;width:100%;font-family:var(--body)}
+.paso:hover{border-color:var(--celula)}
+.pnum{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;color:#fff;
+  font-weight:800;flex:0 0 auto;font-family:var(--display);font-size:15px}
+.paso b{display:block;font-size:16px;margin-bottom:2px;font-family:var(--display)}
+.paso p{margin:0;font-size:14.5px;color:var(--fg-soft);max-width:none}
+.paso .det{margin-top:8px;font-size:14.5px;color:var(--fg)}
+
+/* flashcards */
+.fc{perspective:1200px;margin-bottom:14px}
+.fci{position:relative;min-height:155px;cursor:pointer;transition:transform .5s;transform-style:preserve-3d}
+.fc.flip .fci{transform:rotateY(180deg)}
+.fcf,.fcb{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;padding:22px;
+  display:flex;flex-direction:column;justify-content:center;border:1px solid var(--line);box-shadow:var(--shadow)}
+.fcf{background:var(--surface)}
+.fcb{background:var(--deep);color:var(--on-deep);transform:rotateY(180deg)}
+.fcf p,.fcb p{max-width:none;margin:0}
+.fch{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;opacity:.65;margin-bottom:8px}
+
+/* quiz */
+.q{border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:18px;margin-bottom:14px;box-shadow:var(--shadow)}
+.qn{font-size:12px;font-weight:700;color:var(--celula);letter-spacing:.07em;margin-bottom:7px}
+.qt{font-weight:700;margin-bottom:12px;max-width:none}
+.rom{margin:0 0 12px;padding-left:28px;font-size:15px;color:var(--fg-soft)}
+.rom li{margin-bottom:4px}
+.opt{display:block;width:100%;text-align:left;font-family:var(--body);font-size:15px;padding:10px 13px;
+  margin-bottom:7px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--celula)}
+.opt:disabled{cursor:default}
+.opt.good{border-color:var(--ok);background:rgba(28,122,82,.13);font-weight:700}
+.opt.bad{border-color:var(--no);background:rgba(181,50,45,.13)}
+.fb{font-size:14.5px;padding:11px 14px;border-radius:10px;margin-top:9px;background:var(--surface-2);border-left:4px solid var(--celula)}
+.score{background:var(--deep);color:var(--on-deep);border-radius:14px;padding:24px;text-align:center}
+.score .big{font-family:var(--display);font-size:48px;font-weight:800;line-height:1;margin:6px 0;font-variant-numeric:tabular-nums}
+
+.chk{display:flex;gap:11px;align-items:flex-start;padding:11px 13px;border:1px solid var(--line);
+  border-radius:10px;background:var(--surface);margin-bottom:8px;cursor:pointer}
+.chk input{margin-top:3px;width:17px;height:17px;accent-color:var(--celula);flex:0 0 auto}
+.chk span{font-size:15px}
+.chk.done span{color:var(--fg-soft);text-decoration:line-through}
+
+.vid{display:flex;gap:13px;align-items:flex-start;padding:14px;border:1px solid var(--line);
+  border-radius:12px;background:var(--surface);margin-bottom:10px;text-decoration:none;color:inherit}
+.vid:hover{border-color:var(--celula)}
+.vicon{width:42px;height:42px;border-radius:11px;background:var(--surface-2);color:var(--fuego);
+  display:grid;place-items:center;flex:0 0 auto;font-size:17px}
+.vid b{display:block;font-size:15.5px;margin-bottom:2px;font-family:var(--display)}
+.vid small{color:var(--fg-soft);font-size:13.5px}
+
+.sec-foot{margin-top:26px;padding-top:18px;border-top:1px solid var(--line)}
+footer.pie{border-top:1px solid var(--line);padding-block:22px;color:var(--fg-soft);font-size:13.5px;text-align:center}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow">Guía de estudio · 7° Básico · Unidad N°3</p>
+    <h1>Las Tres Murallas</h1>
+    <p class="sub">Tu cuerpo tiene tres líneas de defensa contra los microbios. Aquí están explicadas, con juegos para practicar y un ensayo de 20 preguntas igual que la prueba.</p>
+    <div class="muros"><span style="background:#C2612C"></span><span style="background:#BE3A34"></span><span style="background:#6B4EA8"></span></div>
+    <div class="prog"><div class="bar"><i id="pbar"></i></div><b id="ptxt">0 de 8 temas listos</b></div>
+  </div>
+</header>
+
+<nav class="tabs"><div class="wrap" id="tabs" role="tablist"></div></nav>
+
+<main class="wrap">
+
+<!-- 1 murallas -->
+<section id="s1">
+  <h2>Las tres líneas de defensa</h2>
+  <p class="lead">Imagina tu cuerpo como un castillo. Para que un microbio te enferme tiene que pasar tres murallas, y cada una funciona de manera distinta.</p>
+
+  <div class="muro m1">
+    <span class="mnum">1</span>
+    <h3>Barrera primaria · impide la entrada</h3>
+    <p>Actúa <b>antes</b> de que el microbio entre al cuerpo. Es una barrera física y química, igual para todos los microbios.</p>
+    <ul class="clean">
+      <li><b>La piel:</b> una cubierta continua que funciona como muralla. Además produce <b>sudor ácido</b>, que dificulta la vida de los microbios.</li>
+      <li><b>Las mucosas:</b> lágrimas, saliva y mocos atrapan y arrastran microbios antes de que entren.</li>
+      <li><b>Los pelos de la nariz y los cilios</b> de las vías respiratorias filtran el aire que respiras.</li>
+    </ul>
+    <div class="dato ojo"><b>Ojo con esto:</b> cuando te cortas la piel, dejas una <b>puerta de entrada</b> abierta. Pero la piel no elimina a los virus que ya entraron: eso le toca a las otras murallas.</div>
+  </div>
+
+  <div class="muro m2">
+    <span class="mnum">2</span>
+    <h3>Barrera secundaria · ataca a cualquiera</h3>
+    <p>Si el microbio logró entrar, actúa esta muralla. Ataca a <b>todos los invasores por igual</b>, sin distinguir cuál es.</p>
+    <ul class="clean">
+      <li><b>La inflamación:</b> la zona se pone roja, caliente e hinchada para aislar y combatir al invasor.</li>
+      <li><b>La fiebre:</b> sube la temperatura del cuerpo para frenar a los microbios.</li>
+      <li><b>Los macrófagos:</b> células que rodean y se <b>devoran</b> a los microbios.</li>
+    </ul>
+  </div>
+
+  <div class="muro m3">
+    <span class="mnum">3</span>
+    <h3>Barrera terciaria · ataque a la medida</h3>
+    <p>Es la defensa <b>específica</b>: fabrica un arma distinta para cada microbio en particular. Es más lenta, pero mucho más precisa.</p>
+    <ul class="clean">
+      <li><b>Los linfocitos:</b> células que producen <b>anticuerpos</b> hechos a la medida de ese microbio.</li>
+      <li><b>La memoria inmune:</b> si el mismo microbio vuelve, el cuerpo lo reconoce y responde mucho más rápido. En esto se basan las vacunas.</li>
+    </ul>
+  </div>
+
+  <div class="dato"><b>La diferencia clave que preguntan:</b> la secundaria ataca a todos igual; la <b>terciaria</b> ataca de forma <b>específica</b> a cada microbio.</div>
+  <div class="sec-foot"><label class="chk" data-k="t1"><input type="checkbox"><span>Sé qué hace cada una de las tres barreras y puedo dar ejemplos</span></label></div>
+</section>
+
+<!-- 2 clasificador -->
+<section id="s2" hidden>
+  <h2>Juego: ¿qué muralla es?</h2>
+  <p class="lead">Te aparece una defensa del cuerpo y tienes que decir a qué barrera pertenece. Son 12 en total.</p>
+  <div class="card">
+    <div class="clz">
+      <small id="czNum">Defensa 1 de 12</small>
+      <div class="item" id="czItem">—</div>
+      <small id="czHint"></small>
+    </div>
+    <div class="clzbtns">
+      <button class="btn" data-b="1">Primaria</button>
+      <button class="btn" data-b="2">Secundaria</button>
+      <button class="btn" data-b="3">Terciaria</button>
+    </div>
+    <div id="czFb" class="fb" hidden></div>
+    <div class="row" style="margin-top:14px;justify-content:space-between">
+      <span class="marcador" id="czScore">Aciertos: 0</span>
+      <button class="btn" id="czReset">Empezar de nuevo</button>
+    </div>
+  </div>
+  <div class="sec-foot"><label class="chk" data-k="t2"><input type="checkbox"><span>Clasifiqué las 12 defensas sin equivocarme</span></label></div>
+</section>
+
+<!-- 3 celulas -->
+<section id="s3" hidden>
+  <h2>El equipo de defensa</h2>
+  <p class="lead">Tres células hacen casi todo el trabajo. Si te aprendes qué hace cada una, tienes resuelta media prueba.</p>
+
+  <div class="grid2">
+    <div class="card" style="margin:0">
+      <span class="tag" style="color:var(--celula)">Devora</span>
+      <h3>Macrófago</h3>
+      <p>Su nombre significa "gran comedor". Rodea al microbio invasor y <b>se lo come</b>. Trabaja en la barrera secundaria y llega a la zona cuando hay inflamación.</p>
+    </div>
+    <div class="card" style="margin:0">
+      <span class="tag" style="color:var(--fuego)">Da la alarma</span>
+      <h3>Mastocito</h3>
+      <p>Vigila los tejidos. Cuando detecta una amenaza libera <b>histamina</b>, que desencadena la inflamación. Es la célula responsable de las <b>alergias</b>.</p>
+    </div>
+    <div class="card" style="margin:0">
+      <span class="tag" style="color:var(--linfa)">Fabrica el arma</span>
+      <h3>Linfocito</h3>
+      <p>Produce <b>anticuerpos específicos</b> contra un microbio en particular. Es la célula de la barrera terciaria y la que guarda la memoria inmune.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="tag">¿Dónde viven?</span><h3>Los órganos del sistema inmune</h3>
+    <div class="tablebox" style="margin:10px 0 0">
+      <table><tbody>
+        <tr><td style="width:150px"><b>Médula ósea</b></td><td>Dentro de los huesos. Aquí <b>se producen</b> las células de defensa de la sangre.</td></tr>
+        <tr><td><b>Timo</b></td><td>Detrás del esternón. Aquí <b>maduran</b> los linfocitos.</td></tr>
+        <tr><td><b>Bazo</b></td><td>Al lado izquierdo del abdomen. Filtra la sangre y elimina células viejas.</td></tr>
+        <tr><td><b>Ganglios linfáticos</b></td><td>Repartidos por el cuerpo (cuello, axilas, ingle). Aquí se <b>acumulan y trabajan</b> las células de defensa; por eso se hinchan cuando estás enfermo.</td></tr>
+      </tbody></table>
+    </div>
+    <div class="dato ojo"><b>Pregunta trampa:</b> el <b>páncreas</b> NO es parte del sistema inmune. Pertenece al sistema digestivo y endocrino.</div>
+  </div>
+
+  <div class="card">
+    <span class="tag">Juego</span><h3>Une cada célula u órgano con su función</h3>
+    <p style="font-size:14.5px">Toca un concepto de la izquierda y luego su función a la derecha.</p>
+    <div class="mt" id="mt"></div>
+    <div class="row" style="margin-top:12px"><span class="marcador" id="mtScore">0 de 6 unidos</span>
+      <button class="btn" id="mtReset">Reiniciar</button></div>
+  </div>
+  <div class="sec-foot"><label class="chk" data-k="t3"><input type="checkbox"><span>Reconozco macrófago, mastocito, linfocito y los 4 órganos</span></label></div>
+</section>
+
+<!-- 4 inflamacion -->
+<section id="s4" hidden>
+  <h2>Qué pasa cuando te cortas</h2>
+  <p class="lead">Toca cada paso para ver el detalle. Esta secuencia es justo lo que pide la pregunta de desarrollo.</p>
+
+  <div id="tl"></div>
+
+  <div class="card" style="margin-top:18px">
+    <span class="tag">Los tres signos</span><h3>Cómo se nota la inflamación</h3>
+    <div class="grid2" style="margin-bottom:0">
+      <div><h3 style="font-size:17px;color:var(--fuego)">Roja</h3><p style="font-size:15px">Llega más sangre a la zona para traer células de defensa.</p></div>
+      <div><h3 style="font-size:17px;color:var(--fuego)">Caliente</h3><p style="font-size:15px">Esa mayor cantidad de sangre sube la temperatura local.</p></div>
+      <div><h3 style="font-size:17px;color:var(--fuego)">Hinchada</h3><p style="font-size:15px">Sale líquido de los vasos hacia el tejido, lo que ayuda a aislar al invasor.</p></div>
+    </div>
+    <div class="dato"><b>Lo importante:</b> la inflamación <b>no</b> significa que la defensa falló. Es exactamente lo contrario: es la defensa trabajando.</div>
+  </div>
+
+  <div class="card">
+    <span class="tag">La otra respuesta general</span><h3>Para qué sirve la fiebre</h3>
+    <ul class="clean">
+      <li><b>Dificulta la reproducción</b> de muchos microbios, que no resisten bien la temperatura alta.</li>
+      <li><b>Acelera el trabajo</b> de las células de defensa del cuerpo.</li>
+    </ul>
+    <div class="dato ojo"><b>Dos errores comunes:</b> la fiebre no indica que el sistema inmune dejó de funcionar, y no siempre hay que bajarla de inmediato. Es una respuesta del propio cuerpo, y corresponde a la <b>barrera secundaria</b>.</div>
+  </div>
+  <div class="sec-foot"><label class="chk" data-k="t4"><input type="checkbox"><span>Explico la inflamación paso a paso y para qué sirve la fiebre</span></label></div>
+</section>
+
+<!-- 5 vacunas -->
+<section id="s5" hidden>
+  <h2>Vacunas</h2>
+  <p class="lead">La vacuna no mata microbios ni cura enfermedades. Hace algo más inteligente: enseña.</p>
+
+  <div class="card">
+    <h3>¿Cómo funciona?</h3>
+    <p>La vacuna le muestra al cuerpo una versión inofensiva del microbio (muerto, debilitado o solo un pedacito). El sistema inmune lo estudia, fabrica anticuerpos y <b>guarda la memoria</b>.</p>
+    <p>Si algún día llega el microbio de verdad, el cuerpo ya sabe cómo es y lo elimina antes de que alcance a enfermarte.</p>
+    <div class="dato"><b>Por eso las vacunas se ponen a personas sanas:</b> su función es <b>prevenir</b> antes del contagio, no curar a alguien que ya está enfermo.</div>
+  </div>
+
+  <div class="card">
+    <span class="tag">Agentes patógenos</span><h3>¿Contra qué nos defendemos?</h3>
+    <p>Un <b>agente patógeno</b> es cualquier microbio capaz de provocar una enfermedad. Los dos ejemplos que vimos en clases:</p>
+    <div class="tablebox" style="margin:10px 0 0">
+      <table><tbody>
+        <tr><td style="width:170px"><b><i>Escherichia coli</i></b></td><td>Una <b>bacteria</b>. Algunas cepas viven sin problema en el intestino; otras provocan infecciones.</td></tr>
+        <tr><td><b>Virus influenza</b></td><td>Un <b>virus</b>. Causa la gripe y existe una vacuna que se actualiza cada año.</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+  <div class="sec-foot"><label class="chk" data-k="t5"><input type="checkbox"><span>Explico qué hace una vacuna y por qué se pone a gente sana</span></label></div>
+</section>
+
+<!-- 6 fallas -->
+<section id="s6" hidden>
+  <h2>Cuando la defensa se equivoca</h2>
+  <p class="lead">El sistema inmune es muy bueno, pero a veces se confunde. Hay tres formas de equivocarse y cada una tiene su nombre.</p>
+
+  <div class="card">
+    <span class="tag" style="color:var(--fuego)">Error 1</span><h3>Alergia</h3>
+    <p>El sistema inmune <b>confunde una sustancia inofensiva</b> (polen, polvo, pelo de gato, un alimento) con una amenaza peligrosa.</p>
+    <p>El <b>mastocito</b> se activa sin necesidad y libera <b>histamina</b>, lo que provoca estornudos, picazón, ojos rojos y mocos. Es una <b>respuesta exagerada frente a algo que no hace daño</b>.</p>
+  </div>
+
+  <div class="card">
+    <span class="tag" style="color:var(--linfa)">Error 2</span><h3>Enfermedad autoinmune</h3>
+    <p>El sistema inmune <b>ataca a las células del propio cuerpo</b>, como si fueran invasoras. Deja de reconocer lo que es suyo.</p>
+  </div>
+
+  <div class="card">
+    <span class="tag" style="color:var(--celula)">Error 3</span><h3>Rechazo de trasplante</h3>
+    <p>Cuando una persona recibe un órgano de otra, su sistema inmune puede atacarlo porque lo <b>reconoce como algo ajeno</b> al cuerpo. Aquí el sistema no se equivoca del todo: hace su trabajo, pero en contra del paciente.</p>
+  </div>
+
+  <div class="tablebox">
+    <table><thead><tr><th>Se confunde con...</th><th>Alergia</th><th>Enfermedad autoinmune</th></tr></thead>
+      <tbody><tr><td><b>¿A quién ataca?</b></td><td>A algo <b>externo e inofensivo</b> (polen, polvo)</td><td>A las <b>células del propio cuerpo</b></td></tr>
+      <tr><td><b>Ejemplo</b></td><td>Estornudar con el polen en primavera</td><td>El cuerpo ataca sus propias articulaciones</td></tr></tbody></table>
+  </div>
+  <div class="sec-foot"><label class="chk" data-k="t6"><input type="checkbox"><span>Diferencio alergia, autoinmune y rechazo de trasplante</span></label></div>
+</section>
+
+<!-- 7 tarjetas -->
+<section id="s7" hidden>
+  <h2>Tarjetas de repaso</h2>
+  <p class="lead">Toca la tarjeta para darla vuelta. Intenta responder en voz alta antes de girarla.</p>
+  <div id="fcwrap"></div>
+  <div class="row"><button class="btn" id="fcPrev">Anterior</button><button class="btn pri" id="fcNext">Siguiente</button>
+    <span class="marcador" id="fcNum"></span></div>
+  <div class="sec-foot"><label class="chk" data-k="t7"><input type="checkbox"><span>Respondí todas las tarjetas sin mirar</span></label></div>
+</section>
+
+<!-- 8 ensayo -->
+<section id="s8" hidden>
+  <h2>Ensayo de 20 preguntas</h2>
+  <p class="lead">Igual que la prueba: alternativas y preguntas con enunciados I, II, III y IV. Te explica cada respuesta al instante.</p>
+  <div id="quiz"></div>
+  <div class="card" id="qres" hidden></div>
+  <div class="row"><button class="btn" id="qReset">Reiniciar ensayo</button></div>
+  <div class="sec-foot"><label class="chk" data-k="t8"><input type="checkbox"><span>Saqué 16 o más en el ensayo</span></label></div>
+</section>
+
+<!-- 9 videos -->
+<section id="s9" hidden>
+  <h2>Videos y plan final</h2>
+  <p class="lead">Los videos de Kurzgesagt que vimos en clases, más el plan para los últimos días. Los enlaces abren YouTube en otra pestaña.</p>
+
+  <a class="vid" href="https://www.youtube.com/@kurzgesagt_es" target="_blank" rel="noopener">
+    <span class="vicon">▶</span><span><b>Kurzgesagt · En pocas palabras</b><small>El canal en español que vimos en clases. Busca ahí los videos del sistema inmune.</small></span></a>
+  <a class="vid" href="https://www.youtube.com/results?search_query=kurzgesagt+espa%C3%B1ol+sistema+inmune+explicado" target="_blank" rel="noopener">
+    <span class="vicon" style="color:var(--piel)">▶</span><span><b>El sistema inmune explicado</b><small>Cómo reacciona tu cuerpo cuando entra un invasor, con los macrófagos en acción.</small></span></a>
+  <a class="vid" href="https://www.youtube.com/results?search_query=qu%C3%A9+es+la+inflamaci%C3%B3n+mastocitos+histamina+explicado+espa%C3%B1ol" target="_blank" rel="noopener">
+    <span class="vicon" style="color:var(--fuego)">▶</span><span><b>Inflamación, mastocitos e histamina</b><small>Qué pasa en la herida y por qué se pone roja, caliente e hinchada.</small></span></a>
+  <a class="vid" href="https://www.youtube.com/results?search_query=c%C3%B3mo+funcionan+las+vacunas+explicado+para+estudiantes+espa%C3%B1ol" target="_blank" rel="noopener">
+    <span class="vicon" style="color:var(--linfa)">▶</span><span><b>Cómo funcionan las vacunas</b><small>Por qué una vacuna enseña en vez de curar, y qué es la memoria inmune.</small></span></a>
+
+  <div class="card" style="margin-top:22px">
+    <span class="tag">El último empujón</span><h3>Cómo estudiar esto en 3 pasos</h3>
+    <ol class="clean" style="padding-left:22px">
+      <li><b>Dibuja las tres murallas.</b> En una hoja, escribe las tres barreras y pon dos ejemplos en cada una, de memoria.</li>
+      <li><b>Aprende las tres células.</b> Macrófago devora, mastocito libera histamina, linfocito fabrica anticuerpos.</li>
+      <li><b>Practica justificar.</b> En el ítem de verdadero y falso tienes que explicar <b>por qué</b> es falsa. No basta con poner la F.</li>
+    </ol>
+    <div class="dato"><b>La mejor señal de que estás listo:</b> si puedes contarle a alguien de tu casa qué pasa en tu cuerpo desde que te cortas hasta que la herida sana, ya lo entendiste.</div>
+  </div>
+  <div class="sec-foot"><label class="chk" data-k="t9"><input type="checkbox"><span>Vi los videos y repasé el plan de 3 pasos</span></label></div>
+</section>
+
+</main>
+<footer class="pie"><div class="wrap">GamiAula · Aprender es jugar · Prof. Nicolás Espinoza González</div></footer>
+
+<script>
+"use strict";
+var SEC=[["s1","Las 3 murallas"],["s2","Juego"],["s3","Células"],["s4","Inflamación"],["s5","Vacunas"],
+         ["s6","Cuando falla"],["s7","Tarjetas"],["s8","Ensayo"],["s9","Videos"]];
+var tabsEl=document.getElementById("tabs");
+SEC.forEach(function(s,i){
+  var b=document.createElement("button"); b.textContent=s[1]; b.setAttribute("role","tab");
+  b.setAttribute("aria-selected",i===0?"true":"false"); b.onclick=function(){show(i)}; tabsEl.appendChild(b);
+});
+function show(i){
+  SEC.forEach(function(s,j){ document.getElementById(s[0]).hidden=j!==i;
+    tabsEl.children[j].setAttribute("aria-selected",j===i?"true":"false"); });
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/* progreso */
+var KEY="inm7.v1";
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){return{}}}
+function save(o){try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}}
+var st=load(), chks=document.querySelectorAll(".chk");
+chks.forEach(function(l){
+  var k=l.dataset.k, inp=l.querySelector("input");
+  inp.checked=!!st[k]; l.classList.toggle("done",inp.checked);
+  inp.onchange=function(){st[k]=inp.checked;save(st);l.classList.toggle("done",inp.checked);prog()};
+});
+function prog(){
+  var n=0; chks.forEach(function(l){if(l.querySelector("input").checked)n++});
+  document.getElementById("pbar").style.width=(n/chks.length*100)+"%";
+  document.getElementById("ptxt").textContent=n+" de "+chks.length+" temas listos";
+}
+prog();
+
+/* clasificador */
+var CZ=[
+ ["La piel",1,"Impide la entrada: es una cubierta continua."],
+ ["Los macrófagos",2,"Devoran a los microbios que ya entraron."],
+ ["Los anticuerpos",3,"Son específicos para cada microbio."],
+ ["Las lágrimas",1,"Arrastran microbios antes de que entren."],
+ ["La fiebre",2,"Respuesta general del cuerpo, no específica."],
+ ["Los linfocitos",3,"Fabrican anticuerpos a la medida."],
+ ["Los mocos",1,"Atrapan microbios en la nariz."],
+ ["La inflamación",2,"Reacción general de la zona dañada."],
+ ["La saliva",1,"Contiene sustancias que eliminan microbios en la boca."],
+ ["El sudor ácido de la piel",1,"Barrera química que dificulta la vida de los microbios."],
+ ["La memoria inmune",3,"Recuerda al microbio exacto que ya enfrentó."],
+ ["La histamina del mastocito",2,"Desencadena la inflamación, respuesta general."]
+];
+var NOM={1:"primaria",2:"secundaria",3:"terciaria"};
+var ci=0, cok=0, cz=CZ.slice();
+function drawCZ(){
+  if(ci>=cz.length){
+    document.getElementById("czItem").textContent="¡Terminaste!";
+    document.getElementById("czNum").textContent="Resultado final";
+    document.getElementById("czHint").textContent="Acertaste "+cok+" de "+cz.length+".";
+    document.getElementById("czFb").hidden=true;
+    return;
+  }
+  document.getElementById("czNum").textContent="Defensa "+(ci+1)+" de "+cz.length;
+  document.getElementById("czItem").textContent=cz[ci][0];
+  document.getElementById("czHint").textContent="¿A qué barrera pertenece?";
+  document.getElementById("czFb").hidden=true;
+  document.getElementById("czScore").textContent="Aciertos: "+cok;
+}
+document.querySelectorAll(".clzbtns button").forEach(function(b){
+  b.onclick=function(){
+    if(ci>=cz.length) return;
+    var pick=+b.dataset.b, real=cz[ci][1], fb=document.getElementById("czFb");
+    if(pick===real) cok++;
+    fb.hidden=false;
+    fb.innerHTML=(pick===real?"<b>¡Correcto!</b> ":"<b>Es barrera "+NOM[real]+".</b> ")+cz[ci][2];
+    ci++;
+    document.getElementById("czScore").textContent="Aciertos: "+cok;
+    setTimeout(function(){
+      if(ci>=cz.length){drawCZ();return}
+      document.getElementById("czNum").textContent="Defensa "+(ci+1)+" de "+cz.length;
+      document.getElementById("czItem").textContent=cz[ci][0];
+    },900);
+  };
+});
+document.getElementById("czReset").onclick=function(){ci=0;cok=0;drawCZ()};
+drawCZ();
+
+/* emparejar */
+var MT=[["Macrófago","Rodea y devora a los microbios"],["Mastocito","Libera histamina y causa picazón"],
+        ["Linfocito","Fabrica anticuerpos específicos"],["Médula ósea","Produce las células de defensa"],
+        ["Timo","Donde maduran los linfocitos"],["Ganglios linfáticos","Se hinchan al acumular defensas"]];
+var selA=null, hechos=0;
+function shuffle(a){var r=a.slice();for(var i=r.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=r[i];r[i]=r[j];r[j]=t}return r}
+function drawMT(){
+  var w=document.getElementById("mt"); w.innerHTML=""; selA=null; hechos=0;
+  var izq=shuffle(MT.map(function(x,i){return{t:x[0],i:i}}));
+  var der=shuffle(MT.map(function(x,i){return{t:x[1],i:i}}));
+  var cl=document.createElement("div"), cr=document.createElement("div");
+  cl.style.display=cr.style.display="flex"; cl.style.flexDirection=cr.style.flexDirection="column"; cl.style.gap=cr.style.gap="8px";
+  izq.forEach(function(o){
+    var b=document.createElement("button"); b.textContent=o.t; b.dataset.i=o.i; b.dataset.lado="a";
+    b.onclick=function(){
+      if(b.disabled) return;
+      cl.querySelectorAll("button").forEach(function(x){x.classList.remove("sel")});
+      b.classList.add("sel"); selA=b;
+    };
+    cl.appendChild(b);
+  });
+  der.forEach(function(o){
+    var b=document.createElement("button"); b.textContent=o.t; b.dataset.i=o.i;
+    b.onclick=function(){
+      if(b.disabled||!selA) return;
+      if(selA.dataset.i===b.dataset.i){
+        selA.classList.remove("sel"); selA.classList.add("hecho"); b.classList.add("hecho");
+        selA.disabled=true; b.disabled=true; selA=null; hechos++;
+        document.getElementById("mtScore").textContent=hechos+" de "+MT.length+" unidos";
+      }else{
+        b.classList.add("sel");
+        setTimeout(function(){b.classList.remove("sel");if(selA)selA.classList.remove("sel");selA=null},450);
+      }
+    };
+    cr.appendChild(b);
+  });
+  w.appendChild(cl); w.appendChild(cr);
+  document.getElementById("mtScore").textContent="0 de "+MT.length+" unidos";
+}
+document.getElementById("mtReset").onclick=drawMT;
+drawMT();
+
+/* linea de tiempo */
+var TL=[
+ ["Se rompe la barrera","El corte abre la piel y los microbios entran al tejido.",
+  "La piel es la barrera primaria. Mientras está sana nada entra; al cortarse deja una puerta abierta.","var(--piel)"],
+ ["El mastocito da la alarma","Detecta que algo no anda bien y libera histamina.",
+  "La histamina hace que los vasos sanguíneos de la zona se abran más, para que llegue más sangre.","var(--fuego)"],
+ ["Llega la inflamación","La zona se pone roja, caliente e hinchada, y duele al tocarla.",
+  "No es una falla: es la señal de que llegó más sangre con células de defensa, y de que la zona se está aislando.","var(--fuego)"],
+ ["Los macrófagos se comen al invasor","Llegan por la sangre y empiezan a devorar microbios.",
+  "El macrófago rodea al microbio y lo engulle por completo. Esto se llama fagocitosis.","var(--celula)"],
+ ["Puede aparecer fiebre","Si la infección avanza, el cuerpo sube su temperatura.",
+  "La fiebre dificulta la reproducción de los microbios y acelera el trabajo de las células de defensa.","var(--fuego)"],
+ ["Entran los linfocitos","Si hace falta, se fabrican anticuerpos específicos contra ese microbio.",
+  "Es la barrera terciaria. Más lenta, pero hecha a la medida. Además deja memoria para la próxima vez.","var(--linfa)"]
+];
+(function(){
+  var w=document.getElementById("tl");
+  TL.forEach(function(p,i){
+    var b=document.createElement("button"); b.className="paso"; b.type="button";
+    b.innerHTML='<span class="pnum" style="background:'+p[3]+'">'+(i+1)+'</span>'+
+      '<span style="flex:1;min-width:0"><b>'+p[0]+'</b><p>'+p[1]+'</p>'+
+      '<p class="det" hidden>'+p[2]+'</p></span>';
+    b.onclick=function(){var d=b.querySelector(".det"); d.hidden=!d.hidden};
+    w.appendChild(b);
+  });
+})();
+
+/* flashcards */
+var FC=[
+ ["¿Cuáles son las tres barreras defensivas?","Primaria (impide la entrada), secundaria (ataca a todos por igual) y terciaria (ataque específico a cada microbio)."],
+ ["¿A qué barrera pertenece la piel?","A la barrera primaria: impide que los microbios entren al cuerpo."],
+ ["¿Cómo nos protege la piel, además de ser una cubierta?","Produce sudor ácido, que dificulta la vida de los microbios. Al cortarse, deja una puerta de entrada."],
+ ["Nombra tres barreras primarias además de la piel.","Lágrimas, saliva y mocos. Atrapan y arrastran los microbios antes de que entren."],
+ ["¿Qué hace un macrófago?","Rodea y devora a los microbios invasores. Actúa en la barrera secundaria."],
+ ["¿Qué célula libera histamina y qué provoca?","El mastocito. La histamina desencadena la inflamación: picazón, estornudos y mocos."],
+ ["¿Qué célula fabrica anticuerpos específicos?","El linfocito, de la barrera terciaria."],
+ ["¿Cuáles son los tres signos de la inflamación?","La zona se pone roja, caliente e hinchada."],
+ ["¿La inflamación significa que la defensa falló?","No. Es justo lo contrario: es la defensa trabajando y llamando más células al lugar."],
+ ["¿Para qué sirve la fiebre?","Dificulta la reproducción de los microbios y acelera el trabajo de las células de defensa. Es barrera secundaria."],
+ ["¿En qué órgano se producen las células de defensa?","En la médula ósea, dentro de los huesos."],
+ ["¿Por qué se hinchan los ganglios cuando estás enfermo?","Porque en ellos se acumulan y trabajan las células de defensa."],
+ ["¿Qué órgano NO pertenece al sistema inmune: timo, bazo, páncreas o ganglios?","El páncreas. Pertenece al sistema digestivo y endocrino."],
+ ["¿Qué hace una vacuna?","Enseña al cuerpo a reconocer un microbio, para que pueda defenderse rápido si algún día llega de verdad."],
+ ["¿Por qué las vacunas se ponen a personas sanas?","Porque su función es prevenir antes del contagio, no curar a quien ya está enfermo."],
+ ["¿Qué error comete el cuerpo en una alergia?","Confunde una sustancia inofensiva, como el polen, con una amenaza peligrosa, y reacciona de forma exagerada."],
+ ["¿Qué pasa en una enfermedad autoinmune?","El sistema inmune ataca a las células del propio cuerpo."],
+ ["Diferencia entre alergia y enfermedad autoinmune.","La alergia ataca algo externo e inofensivo; la autoinmune ataca al propio cuerpo."],
+ ["¿Por qué el cuerpo puede rechazar un trasplante?","Porque reconoce al órgano como algo ajeno al cuerpo y lo ataca."],
+ ["¿Qué es un agente patógeno? Da dos ejemplos.","Un microbio capaz de provocar una enfermedad. Por ejemplo la bacteria Escherichia coli y el virus influenza."],
+ ["¿En qué se diferencia la barrera terciaria de la secundaria?","La terciaria ataca de forma específica a cada microbio; la secundaria ataca a todos por igual."]
+];
+var fi=0;
+function drawFC(){
+  document.getElementById("fcwrap").innerHTML='<div class="fc" id="fcx"><div class="fci">'+
+    '<div class="fcf"><div class="fch">Pregunta</div><p style="font-weight:700;font-size:18px">'+FC[fi][0]+'</p>'+
+    '<p style="color:var(--fg-soft);font-size:13.5px;margin-top:10px">Toca para ver la respuesta</p></div>'+
+    '<div class="fcb"><div class="fch">Respuesta</div><p style="font-size:16px">'+FC[fi][1]+'</p></div></div></div>';
+  var c=document.getElementById("fcx"); c.onclick=function(){c.classList.toggle("flip")};
+  document.getElementById("fcNum").textContent=(fi+1)+" de "+FC.length;
+}
+document.getElementById("fcNext").onclick=function(){fi=(fi+1)%FC.length;drawFC()};
+document.getElementById("fcPrev").onclick=function(){fi=(fi-1+FC.length)%FC.length;drawFC()};
+drawFC();
+
+/* ensayo */
+var Q=[
+ {t:"¿Cuál de las siguientes estructuras corresponde a una barrera primaria del cuerpo humano?",
+  o:["Los linfocitos de la sangre.","Los macrófagos del tejido.","La piel que cubre el cuerpo.","Los anticuerpos del plasma."],c:2,
+  f:"La piel es barrera primaria: impide la entrada de los microbios al cuerpo."},
+ {t:"Las lágrimas, la saliva y los mocos también protegen al cuerpo. Estas defensas corresponden a:",
+  o:["barreras terciarias.","barreras primarias.","respuestas alérgicas.","órganos del sistema inmune."],c:1,
+  f:"Atrapan y arrastran microbios antes de que entren, por eso son barreras primarias."},
+ {r:["forma una cubierta continua que actúa como muralla.","produce sudor ácido que dificulta la vida de microbios.","al cortarse, deja una puerta de entrada a los microbios.","elimina directamente a los virus que ya entraron."],
+  t:"Respecto de cómo la piel nos protege de los agentes patógenos, es correcto afirmar que:",
+  o:["Solo I y II","Solo II y III","Solo I, II y III","Solo I, III y IV"],c:2,
+  f:"El IV es falso: la piel impide la ENTRADA, no elimina a los que ya ingresaron."},
+ {t:"¿Cuál es la función principal de los macrófagos?",
+  o:["Transportar el oxígeno a los tejidos.","Producir la fiebre en la infección.","Devorar a los microbios invasores.","Formar las costras de las heridas."],c:2,
+  f:"El macrófago rodea y se come a los microbios. Eso se llama fagocitosis."},
+ {t:"Un niño se corta la rodilla y a los pocos minutos la zona se enrojece y se hincha. Esta reacción es:",
+  o:["Una alergia al polen.","Una inflamación.","Una infección viral.","Una cicatriz antigua."],c:1,
+  f:"Enrojecimiento, calor e hinchazón en la zona dañada corresponden a la inflamación."},
+ {r:["la zona se pone roja, hinchada y caliente.","llegan más glóbulos blancos al lugar dañado.","es una señal de que la defensa falló por completo.","ayuda a aislar y combatir al agente invasor."],
+  t:"Respecto de la inflamación, es correcto afirmar que:",
+  o:["Solo I y II","Solo III y IV","Solo I, II y III","Solo I, II y IV"],c:3,
+  f:"El III es falso: la inflamación no indica que la defensa falló, es justamente la defensa actuando."},
+ {t:"¿En cuál de los siguientes órganos se producen las células de defensa de la sangre?",
+  o:["En el intestino delgado.","En la médula ósea.","En el aparato digestivo.","En los pulmones."],c:1,
+  f:"Las células de defensa de la sangre se producen en la médula ósea."},
+ {t:"Los ganglios linfáticos se inflaman cuando una persona está enferma porque en ellos:",
+  o:["se almacena la grasa del cuerpo.","se acumulan células de defensa.","se produce la sangre del cuerpo.","se fabrican las hormonas."],c:1,
+  f:"Los ganglios se hinchan porque en ellos se acumulan y trabajan las células de defensa."},
+ {t:"¿Cuál de los siguientes órganos NO forma parte del sistema inmune?",
+  o:["El timo.","El bazo.","El páncreas.","Los ganglios."],c:2,
+  f:"El páncreas pertenece al sistema digestivo y endocrino, no al sistema inmune."},
+ {t:"Una vacuna protege a las personas frente a una enfermedad porque:",
+  o:["mata todos los microbios del cuerpo.","reemplaza a la piel como barrera.","enseña al cuerpo a reconocerlo.","baja la fiebre de la infección."],c:2,
+  f:"La vacuna enseña al cuerpo a reconocer al microbio para defenderse rápido después."},
+ {t:"Las vacunas se aplican a personas sanas y no a enfermas, porque su función es:",
+  o:["curar la enfermedad ya instalada.","evitar que la persona se enferme.","reemplazar los medicamentos.","eliminar la fiebre del paciente."],c:1,
+  f:"La vacuna es preventiva: se aplica antes para evitar que la persona se enferme."},
+ {t:"Una persona estornuda y le pica la nariz cada vez que hay polen en el aire. Esto es:",
+  o:["una enfermedad autoinmune.","una respuesta alérgica.","una infección por bacterias.","una barrera secundaria."],c:1,
+  f:"Los síntomas frente al polen, que es inofensivo, corresponden a una respuesta alérgica."},
+ {r:["reconocen correctamente a todos los agentes patógenos.","confunden sustancias inofensivas con amenazas peligrosas.","liberan histamina y provocan picazón, mocos y estornudos.","generan una respuesta exagerada frente a algo inofensivo."],
+  t:"Respecto del papel de los mastocitos en las alergias, es correcto afirmar que:",
+  o:["Solo I y II","Solo II y III","Solo I, II y III","Solo II, III y IV"],c:3,
+  f:"El I es falso: en la alergia el mastocito NO reconoce bien, confunde algo inofensivo con una amenaza."},
+ {t:"En una enfermedad autoinmune ocurre que el sistema inmune:",
+  o:["deja de producir células de defensa.","ataca a las células del propio cuerpo.","se vuelve más rápido frente a virus.","pierde todos sus órganos sanos."],c:1,
+  f:"En la enfermedad autoinmune el sistema inmune ataca a las células del propio cuerpo."},
+ {t:"¿Cuál es la diferencia principal entre una alergia y una enfermedad autoinmune?",
+  o:["La alergia ataca algo inofensivo; la autoinmune, al propio cuerpo.","La alergia ataca al propio cuerpo; la autoinmune, algo inofensivo.","La alergia afecta solo la piel; la autoinmune, solo la sangre.","La alergia la causan las bacterias; la autoinmune, los virus."],c:0,
+  f:"La alergia ataca algo externo inofensivo; la autoinmune ataca al propio cuerpo."},
+ {t:"La bacteria Escherichia coli y el virus influenza son ejemplos de:",
+  o:["células de defensa.","agentes patógenos.","barreras primarias.","órganos linfáticos."],c:1,
+  f:"Son agentes patógenos: microbios capaces de provocar enfermedades."},
+ {t:"¿Qué tipo de célula produce anticuerpos específicos contra un microbio?",
+  o:["El macrófago.","El mastocito.","El linfocito.","El glóbulo rojo."],c:2,
+  f:"El linfocito es la célula que fabrica anticuerpos específicos."},
+ {t:"Cuando una persona recibe un trasplante, su sistema inmune puede rechazar el órgano porque:",
+  o:["el órgano llega con muchos microbios.","el cuerpo no tiene suficientes defensas.","lo reconoce como algo ajeno al cuerpo.","la vacuna del paciente dejó de servir."],c:2,
+  f:"El cuerpo rechaza el órgano porque lo reconoce como algo ajeno a sí mismo."},
+ {r:["dificulta la reproducción de muchos microbios.","acelera el trabajo de las células de defensa.","siempre debe eliminarse de inmediato con medicamentos.","indica que el sistema inmune dejó de funcionar."],
+  t:"Respecto del efecto que tiene la fiebre sobre el organismo, es correcto afirmar que:",
+  o:["Solo I y II","Solo II y III","Solo I, II y III","Solo I, III y IV"],c:0,
+  f:"El III y el IV son falsos: la fiebre no debe eliminarse siempre de inmediato y sí indica que el sistema inmune está funcionando."},
+ {t:"Las barreras terciarias se diferencian de las secundarias porque las terciarias:",
+  o:["actúan antes de que entre el microbio.","atacan de modo específico al microbio.","son las primeras en responder siempre.","solo funcionan sobre la piel sana."],c:1,
+  f:"Las barreras terciarias actúan de forma específica contra cada microbio en particular."}
+];
+var ans=[];
+function drawQuiz(){
+  var w=document.getElementById("quiz"); w.innerHTML=""; ans=[];
+  Q.forEach(function(q,i){
+    var d=document.createElement("div"); d.className="q";
+    var h='<div class="qn">PREGUNTA '+(i+1)+'</div><div class="qt">'+q.t+'</div>';
+    if(q.r){h+='<ol class="rom" type="I">';q.r.forEach(function(x){h+='<li>'+x+'</li>'});h+='</ol>';}
+    d.innerHTML=h;
+    var box=document.createElement("div");
+    q.o.forEach(function(op,k){
+      var b=document.createElement("button"); b.className="opt"; b.textContent="ABCDE"[k]+")  "+op;
+      b.onclick=function(){
+        if(ans[i]!==undefined)return;
+        ans[i]=k;
+        Array.prototype.forEach.call(box.children,function(x,j){
+          x.disabled=true;
+          if(j===q.c)x.classList.add("good"); else if(j===k)x.classList.add("bad");
+        });
+        var fb=document.createElement("div"); fb.className="fb";
+        fb.innerHTML=(k===q.c?"<b>¡Correcto!</b> ":"<b>Respuesta correcta: "+"ABCDE"[q.c]+".</b> ")+q.f;
+        d.appendChild(fb); tally();
+      };
+      box.appendChild(b);
+    });
+    d.appendChild(box); w.appendChild(d);
+  });
+  document.getElementById("qres").hidden=true;
+}
+function tally(){
+  var done=0,ok=0;
+  Q.forEach(function(q,i){if(ans[i]!==undefined){done++;if(ans[i]===q.c)ok++}});
+  if(done===Q.length){
+    var r=document.getElementById("qres"); r.hidden=false; r.className="card score";
+    var msg= ok>=16?"Estás listo para la prueba.":ok>=12?"Vas bien, repasa los temas que fallaste.":"Vuelve a las pestañas de contenido y repite el ensayo.";
+    r.innerHTML='<div style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:.8">Resultado</div>'+
+      '<div class="big">'+ok+' / '+Q.length+'</div><div style="opacity:.9">'+Math.round(ok/Q.length*100)+' % de respuestas correctas</div>'+
+      '<p style="margin:12px 0 0;max-width:none;font-weight:700">'+msg+'</p>';
+    r.scrollIntoView({behavior:"smooth",block:"center"});
+  }
+}
+document.getElementById("qReset").onclick=function(){drawQuiz();window.scrollTo({top:0,behavior:"smooth"})};
+drawQuiz();
+</script>
+
+</body></html>
